@@ -5,6 +5,11 @@
 This package contains a set of command line tools that allows you to interact
 with Adlib data in a flexible, structured and efficient way.
 
+## Requirements
+
+You'll need to install the [Node core package](https://nodejs.org/) which
+contains the npm command line tool.
+
 ## Installation
 
 1/ Clone/Download this repository to your local machine:
@@ -46,4 +51,6 @@ you can save to a CSV file.
 
 Lin Clark's [Building a simple command line tool with npm](http://blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm) is a great
 introduction to extending this tool with your own commands.
+
+Dependencies on generic packages can be found on [npmjs.com](https://www.npmjs.com/)
 

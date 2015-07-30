@@ -7,20 +7,20 @@ with Adlib data in a flexible, structured and efficient way.
 
 ## Installation
 
-1. Clone/Download this repository to your local machine:
+1/ Clone/Download this repository to your local machine:
 
 ``` bash
 $ git clone https://bitbucket.org/netsensei/adlib
 ```
 
-2. Install the dependencies
+2/ Install the dependencies
 
 ``` bash
 $ cd adlib
 $ npm install
 ```
 
-3. Make the commands globally available in your system:
+3/ Make the commands globally available in your system:
 
 ``` bash
 $ npm link
@@ -29,7 +29,7 @@ $ npm link
 Note: you might need to execute `sudo npm link` instead if you are not permitted
 to link the commands.
 
-4. You are ready to start using the command line tools
+4/ You are ready to start using the command line tools
 
 ## Usage
 

@@ -1,12 +1,14 @@
 #! /usr/bin/env node
 var program = require('commander');
-var convert = require('../lib/convert.js');
+var scrape = require('../lib/scrape.js');
 
 program
 	.version('0.0.1')
 	.action(function (datFile, csvFile) {
-		console.log("Converting objects from DAT to CSV...");
-		convert(datFile, csvFile);
+		console.log("Convering from DAT to CSV and scraping images...");
+		scrape(datFile, csvFile);
 	});
 
 program.parse(process.argv);
+
+process.exit(0);

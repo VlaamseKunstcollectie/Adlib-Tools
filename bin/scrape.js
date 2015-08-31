@@ -10,5 +10,3 @@ program
 	});
 
 program.parse(process.argv);
-
-process.exit(0);

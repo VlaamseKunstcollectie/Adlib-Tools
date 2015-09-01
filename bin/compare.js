@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 var program = require('commander');
-var compare = require('../lib/compare.js');
+var compare = require('../app/controllers/compare.js');
 var clc = require('cli-color');
 
 program

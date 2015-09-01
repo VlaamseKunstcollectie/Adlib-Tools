@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 var program = require('commander');
-var resolve = require('../lib/resolve.js');
+var resolve = require('../app/controllers/resolve.js');
 
 program
 	.version('0.0.1')

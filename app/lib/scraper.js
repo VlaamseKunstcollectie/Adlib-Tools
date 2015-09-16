@@ -27,19 +27,27 @@ var scraper = Promise.method(function (records) {
         var current = Promise.fulfilled();
         Promise.all(data.map(function(object) {
           current = current.then(function() {
-            return rp(object['URL']).then(
-              function(html) {
-                var $  = cheerio.load(html);
-                object['IMG'] = 'http://www.vlaamsekunstcollectie.be/' + $('#ctl00_ContentPlaceHolder1_ccSingleObject_FormView1_imgObject').attr('src');
-                pace.op();
-                return object;
-              },
-              function(error) {
-                console.log(error);
-                object['IMG'] = '';
-                pace.op();
-                return object;
+            return rp({uri: object['URL'], resolveWithFullResponse: true}).then(
+              function(response) {
+              	// @todo
+              	//  Currently none testable since all requests ALWAYS return 200!!
+                if (response.statusCode == 200) {
+	               var $  = cheerio.load(response.body);
+	               var image = $('#ctl00_ContentPlaceHolder1_ccSingleObject_FormView1_imgObject').attr('src');
+	               if (_.isUndefined(image)) {
+                  object['IMG'] = ''; // no image if image could not be found in DOM.
+	               } else {
+                  object['IMG'] = 'http://www.vlaamsekunstcollectie.be/' + image;
+	               }
+                } else {
+                  object['IMG'] = '';
+                  object['URL'] = ''; // unset the URL if not 200
+                }
+	              pace.op();
+	              return object;
               });
+          }).catch(function (error) {
+          	console.log(error);
           });
           return current;
         })).then(function(results) {

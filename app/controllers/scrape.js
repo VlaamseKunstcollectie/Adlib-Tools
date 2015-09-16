@@ -43,7 +43,6 @@ var scrape = function(inputFile, csvFile, type) {
 			}
 		},
 		function (data, callback) {
-			console.log(data);
 			scraper(data).then(function(records) {
 				callback(null, records);
 			});

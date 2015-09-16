@@ -5,7 +5,7 @@ var converter = Promise.method(function (records) {
   return new Promise(function (resolve, reject) {
     console.log('Parsing objects...');
     var parsedObjects = [];
-    var objects = records.split(/\*\*([\r\n]+)/).slice(0, 20);
+    var objects = records.split(/\*\*([\r\n]+)/);
     var objects = _.without(objects, '\r\n');
     console.log('Parsing %s objects...', objects.length);
 

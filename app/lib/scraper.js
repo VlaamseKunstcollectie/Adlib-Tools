@@ -3,6 +3,7 @@ var rp = require('request-promise');
 var Promise = require("bluebird");
 var async = require('async');
 var _ = require('underscore');
+var parse = require('url-parse');
 
 var scraper = Promise.method(function (records) {
   return new Promise(function (resolve, reject) {
@@ -37,7 +38,12 @@ var scraper = Promise.method(function (records) {
 	               if (_.isUndefined(image)) {
                   object['IMG'] = ''; // no image if image could not be found in DOM.
 	               } else {
-                  object['IMG'] = 'http://www.vlaamsekunstcollectie.be/' + image;
+                   var imageUrl = 'http://www.vlaamsekunstcollectie.be/' + image;
+                   var parsedUrl = parse(imageUrl, true);
+                   // Get rid of the 'width' & 'height' query parameters, we are not
+                   // interested in the thumbnail version.
+                   parsedUrl.set('query', _.omit(parsedUrl.query, ['width', 'height']));
+                   object['IMG'] = parsedUrl.href;
 	               }
                 } else {
                   object['IMG'] = '';

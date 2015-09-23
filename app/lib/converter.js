@@ -14,7 +14,16 @@ var converter = Promise.method(function (records) {
       var rows = object.split(/\r\n?|\n/);
       _.each(rows, function (row) {
         row = row.trim();
-        parsedObject[row.substr(0, row.indexOf(' '))] = row.substr(row.indexOf(' ') + 1);
+        // Fixed positions, can't use substring because it munges the propertyKey
+        // somehow. Need to fix this.
+        var propertyKey = row.substr(0, 2);
+        var propertyValue = row.substr(3)
+        // Deal with multivalued fields
+        if (_.contains(_.keys(parsedObject), propertyKey)) {
+          parsedObject[propertyKey].push(propertyValue);
+        } else {
+          parsedObject[propertyKey] = [ propertyValue ];
+        }
       });
       parsedObjects.push(parsedObject);
     });

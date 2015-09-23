@@ -2,6 +2,7 @@ var fs = require('fs');
 var _ = require('underscore');
 var async = require('async');
 var csv = require('fast-csv');
+var converter = require('../lib/converter.js');
 
 var convert = function(datFile, csvFile) {
 	var pace = '';
@@ -14,30 +15,25 @@ var convert = function(datFile, csvFile) {
 			});
 		},
 		function(data, callback) {
-			var parsedObjects = [];
-			var objects = data.split(/\*\*(\r\n?|\n)/);
-			console.log('Parsing %s objects...', objects.length);
-			_.each(objects, function (object) {
-				var parsedObject = [];
-				var rows = object.split(/\r\n?|\n/);
-				_.each(rows, function (row) {
-					row = row.trim();
-					parsedObject[row.substr(0, row.indexOf(' '))] = row.substr(row.indexOf(' ') + 1);
-				});
-				parsedObjects.push(parsedObject);
-			});
-			console.log('%s parsed objects', parsedObjects.length);
-			callback(null, parsedObjects);
+			converter(data).then(function(parsedObjects) {
+				callback(null, parsedObjects);
+			})
 		},
 		function(data, callback) {
 			console.log('Converting objects...');
 			var parsedObjects = [];
 			_.each(data, function (object) {
 					if (typeof object['IN'] != 'undefined') {
-						parsedObjects.push({
-							INV: object['IN'],
-							TITLE: object['TI']
-						});
+						var parsedObject = {
+							INV: object['IN'][0],
+							TITLE: object['TI'][0]
+						}
+						if (_.isArray(object['TT'])) {
+							parsedObject["TITLE_FR"] = (object['TT'][0] !== "undefined") ? object['TT'][0] : "";
+							parsedObject["TITLE_EN"] = (object['TT'][1] !== "undefined") ? object['TT'][1] : "";
+							parsedObject["TITLE_DE"] = (object['TT'][2] !== "undefined") ? object['TT'][2] : "";
+						}
+						parsedObjects.push(parsedObject);
 					}
 			});
 			callback(null, parsedObjects, pace);
@@ -45,7 +41,7 @@ var convert = function(datFile, csvFile) {
 	], function (err, result) {
 		console.log('Writing CSV file...');
 		var ws = fs.createWriteStream(csvFile);
-		csv.write(result, { headers: false} ).pipe(ws);
+		csv.write(result, { headers: true} ).pipe(ws);
 	});
 }
 

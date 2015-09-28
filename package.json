@@ -9,7 +9,8 @@
   "bin": {
     "adlib-convert": "bin/convert.js",
     "adlib-scrape": "bin/scrape.js",
-    "adlib-resolve": "bin/resolve.js"
+    "adlib-resolve": "bin/resolve.js",
+    "adlib-pid": "bin/pid.js"
   },
   "author": "Matthias Vandermaesen",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "fast-csv": "^0.6.0",
     "request-promise": "^0.4.3",
     "underscore": "^1.8.3",
+    "unidecode": "^0.1.7",
     "url-parse": "^1.0.2"
   }
 }

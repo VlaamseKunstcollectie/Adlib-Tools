@@ -38,11 +38,12 @@ to link the commands.
 
 ## Usage
 
-There is only one command available at this time:
+These commands are avialable:
 
-``` bash
-$ adlib-convert
-```
+- adlib-convert : Convert an Adlib DAT export to CSV
+- adlib-scrape : Convert Adlib DAT file and scrape URL's from VKC.be website
+- adlib-resolve : Convert the output of adlib-scrape into a Resolver import file
+- adlib-pid : Convert a set of id's as a CSV file into valid PID's
 
 This command wil convert a DAT export file to a CSV formatted data string that
 you can save to a CSV file.

@@ -14,6 +14,9 @@ var pid = function(csvFile, idColumn) {
 	        	.fromPath(path, options)
 	        	.transform(function (row) {
 	        		  row['MEH'] = cleanId(row['OID']);
+	        		  var origID = _.last(row['PURI_werk'].split('/'));
+	        		  row['MATCH'] = (origID == row['MEH']) ? "YES" : "NO";
+
             	  return row;
 	        	})
 	        	.on('data', function(record) {

@@ -4,6 +4,8 @@ var Promise = require("bluebird");
 var async = require('async');
 var _ = require('underscore');
 var parse = require('url-parse');
+var util = require('../lib/util.js')
+var sabam = require('../lib/sabam.js');
 
 var scraper = Promise.method(function (records) {
   return new Promise(function (resolve, reject) {
@@ -12,9 +14,12 @@ var scraper = Promise.method(function (records) {
         var parsedObjects = [];
         _.each(records, function (object) {
             if (typeof object['IN'] != 'undefined') {
+              var creator = util.fetchValue(object, "VV", 0)
               parsedObjects.push({
-                INV: object['IN'],
-                TITLE: object['TI'],
+                INV: object['IN'][0],
+                TITLE: object['TI'][0],
+                CREATOR: creator,
+                SABAM: sabam(creator),
                 URL: 'http://www.vlaamsekunstcollectie.be/collection.aspx?p=0848cab7-2776-4648-9003-25957707491a&inv=' + object['IN'],
               });
             }

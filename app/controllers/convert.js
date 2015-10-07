@@ -3,9 +3,12 @@ var _ = require('underscore');
 var async = require('async');
 var csv = require('fast-csv');
 var converter = require('../lib/converter.js');
+var sabam = require('../lib/sabam.js');
+var util = require('../lib/util.js')
 
 var convert = function(datFile, csvFile) {
 	var pace = '';
+	console.log(util.fetchValue);
 
 	async.waterfall([
 		function(callback) {
@@ -24,10 +27,17 @@ var convert = function(datFile, csvFile) {
 			var parsedObjects = [];
 			_.each(data, function (object) {
 					if (typeof object['IN'] != 'undefined') {
+					  var creator = util.fetchValue(object, "VV", 0)
 						var parsedObject = {
 							INV: object['IN'][0],
+							CREATOR: creator,
+							CREATOR_DOB: fetchValue(object, "n4", 0),
+							CREATOR_DOD: fetchValue(object, "n6", 0),
+							CREATOR_DOD_CONVERT: convertDate(object, "n6", 0),
+							SABAM: sabam(creator),
 							TITLE: object['TI'][0]
 						}
+
 						if (_.isArray(object['TT'])) {
 							parsedObject["TITLE_FR"] = (object['TT'][0] !== "undefined") ? object['TT'][0] : "";
 							parsedObject["TITLE_EN"] = (object['TT'][1] !== "undefined") ? object['TT'][1] : "";

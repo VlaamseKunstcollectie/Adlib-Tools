@@ -50,7 +50,7 @@ var scrape = function(inputFile, csvFile, type) {
 	], function (err, result) {
 		var ws = fs.createWriteStream(csvFile);
 		csv
-			.write(result, { headers: false})
+			.write(result, { headers: true})
 			.pipe(ws)
 			.on('finish', function() {
 				console.log('%s records written to %s', result.length, csvFile);

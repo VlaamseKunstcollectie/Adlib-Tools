@@ -18,6 +18,7 @@ var resolve = function(csvFile) {
             	  	'title': row['title'],
             	  	'document type': 'data',
             	  	'URL': row['data_url'],
+            	  	'sabam': row['SABAM'],
             	  	'enabled': '1',
             	  	'notes': '',
             	  	'format': 'html',
@@ -33,6 +34,8 @@ var resolve = function(csvFile) {
             .on('data', function(record) {
             		var images = record.images;
                 delete record.images;
+            		var enabled = (record.sabam == '1') ? 0 : 1;
+            		delete record.sabam;
             		// Push the data record
                 records.push(record);
 
@@ -46,7 +49,7 @@ var resolve = function(csvFile) {
 	            	  	'title': record['title'],
 	            	  	'document type': 'representation',
 	            	  	'URL': image,
-	            	  	'enabled': '1',
+	            	  	'enabled': enabled,
 	            	  	'notes': '',
 	            	  	'format': '',
 	            	  	'reference': (key == 0) ? 1: '',

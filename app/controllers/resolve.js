@@ -50,7 +50,7 @@ var resolve = function(csvFile) {
 	            	  	'document type': 'representation',
 	            	  	'URL': image,
 	            	  	'enabled': enabled,
-	            	  	'notes': '',
+	            	  	'notes': (enabled == 0) ? 'This link is disabled due to copyright restrictions.' : '',
 	            	  	'format': '',
 	            	  	'reference': (key == 0) ? 1: '',
 	            	  	'order': key,

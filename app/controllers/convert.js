@@ -8,7 +8,6 @@ var util = require('../lib/util.js')
 
 var convert = function(datFile, csvFile) {
 	var pace = '';
-	console.log(util.fetchValue);
 
 	async.waterfall([
 		function(callback) {
@@ -31,9 +30,9 @@ var convert = function(datFile, csvFile) {
 						var parsedObject = {
 							INV: object['IN'][0],
 							CREATOR: creator,
-							CREATOR_DOB: fetchValue(object, "n4", 0),
-							CREATOR_DOD: fetchValue(object, "n6", 0),
-							CREATOR_DOD_CONVERT: convertDate(object, "n6", 0),
+							CREATOR_DOB: util.fetchValue(object, "n4", 0),
+							CREATOR_DOD: util.fetchValue(object, "n6", 0),
+							CREATOR_DOD_CONVERT: util.convertDate(object, "n6", 0),
 							SABAM: sabam(creator),
 							TITLE: object['TI'][0]
 						}

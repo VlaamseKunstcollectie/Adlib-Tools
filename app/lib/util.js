@@ -3,12 +3,18 @@ var _ = require('underscore');
 
 var util = function() {
 	return {
-	  fetchValue: function (object, field, key) {
+		// @todo
+		//  Factor type out to specific class?
+	  fetchValue: function (object, field, key, type) {
 			var result = "";
 			if (field in object) {
 				if (!_.isUndefined(object[field])) {
-					if (!_.isUndefined(object[field][key])) {
-						result = object[field][key]
+					if (type == 'dat') {
+						if (!_.isUndefined(object[field][key])) {
+							result = object[field][key]
+						}
+					} else {
+						result = object[field];
 					}
 				}
 			}

@@ -34,13 +34,16 @@ var convert = function(datFile, csvFile) {
 							CREATOR_DOD: util.fetchValue(object, "n6", 0),
 							CREATOR_DOD_CONVERT: util.convertDate(object, "n6", 0),
 							SABAM: sabam(creator),
-							TITLE: object['TI'][0]
+							TITLE: util.fetchValue(object, "TI", 0)
 						}
 
 						if (_.isArray(object['TT'])) {
 							parsedObject["TITLE_FR"] = (object['TT'][0] !== "undefined") ? object['TT'][0] : "";
 							parsedObject["TITLE_EN"] = (object['TT'][1] !== "undefined") ? object['TT'][1] : "";
 							parsedObject["TITLE_DE"] = (object['TT'][2] !== "undefined") ? object['TT'][2] : "";
+						}
+						if (_.isArray(object['I6'])) {
+							parsedObject["ALT_NUM"] = object['I6'].join();
 						}
 						parsedObjects.push(parsedObject);
 					}

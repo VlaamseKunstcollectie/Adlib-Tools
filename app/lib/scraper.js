@@ -7,17 +7,17 @@ var parse = require('url-parse');
 var util = require('../lib/util.js')
 var sabam = require('../lib/sabam.js');
 
-var scraper = Promise.method(function (records) {
+var scraper = Promise.method(function (records, type) {
   return new Promise(function (resolve, reject) {
     async.waterfall([
       function(callback) {
         var parsedObjects = [];
         _.each(records, function (object) {
             if (typeof object['IN'] != 'undefined') {
-              var creator = util.fetchValue(object, "VV", 0)
+              var creator = util.fetchValue(object, "VV", 0, type)
               parsedObjects.push({
-                INV: object['IN'][0],
-                TITLE: object['TI'][0],
+                INV: util.fetchValue(object, "IN", 0, type),
+                TITLE: util.fetchValue(object, "TI", 0, type),
                 CREATOR: creator,
                 SABAM: sabam(creator),
                 URL: 'http://www.vlaamsekunstcollectie.be/collection.aspx?p=0848cab7-2776-4648-9003-25957707491a&inv=' + object['IN'],
@@ -38,18 +38,21 @@ var scraper = Promise.method(function (records) {
               	// @todo
               	//  Currently none testable since all requests ALWAYS return 200!!
                 if (response.statusCode == 200) {
-	               var $  = cheerio.load(response.body);
-	               var image = $('#ctl00_ContentPlaceHolder1_ccSingleObject_FormView1_imgObject').attr('src');
-	               if (_.isUndefined(image)) {
-                  object['IMG'] = ''; // no image if image could not be found in DOM.
-	               } else {
-                   var imageUrl = 'http://www.vlaamsekunstcollectie.be/' + image;
-                   var parsedUrl = parse(imageUrl, true);
-                   // Get rid of the 'width' & 'height' query parameters, we are not
-                   // interested in the thumbnail version.
-                   parsedUrl.set('query', _.omit(parsedUrl.query, ['width', 'height']));
-                   object['IMG'] = parsedUrl.href;
-	               }
+                  var $  = cheerio.load(response.body);
+
+                  // Content was found. Now, let's see if we can fetch an
+                  // image.
+                  var image = $('#ctl00_ContentPlaceHolder1_ccSingleObject_FormView1_imgObject').attr('src');
+                  if (_.isUndefined(image)) {
+                    object['IMG'] = ''; // no image if image could not be found in DOM.
+                  } else {
+                    var imageUrl = 'http://www.vlaamsekunstcollectie.be/' + image;
+                    var parsedUrl = parse(imageUrl, true);
+                    // Get rid of the 'width' & 'height' query parameters, we are not
+                    // interested in the thumbnail version.
+                    parsedUrl.set('query', _.omit(parsedUrl.query, ['width', 'height']));
+                    object['IMG'] = parsedUrl.href;
+                  }
                 } else {
                   object['IMG'] = '';
                   object['URL'] = ''; // unset the URL if not 200

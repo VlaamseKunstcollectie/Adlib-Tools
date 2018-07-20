@@ -13,9 +13,13 @@ var pid = function(csvFile, idColumn) {
 	        csv
 	        	.fromPath(path, options)
 	        	.transform(function (row) {
-	        		  row['MEH'] = cleanId(row['OID']);
-	        		  var origID = _.last(row['PURI_werk'].split('/'));
-	        		  row['MATCH'] = (origID == row['MEH']) ? "YES" : "NO";
+	        			var pid = cleanId(row['INV']);
+	        		  row['PID'] = pid;
+	        		  row['WORK'] = "http://mskgent.be/collection/work/id/" + pid;
+	        		  row['DATA'] = "http://vlaamsekunstcollectie.be/collection/work/data/" + pid;
+	        		  row['REPRESENTATION'] = "http://vlaamsekunstcollectie.be/collection/work/representation/" + pid;
+	        		  //var origID = _.last(row['PURI_werk'].split('/'));
+	        		  //row['MATCH'] = (origID == row['MEH']) ? "YES" : "NO";
 
             	  return row;
 	        	})
